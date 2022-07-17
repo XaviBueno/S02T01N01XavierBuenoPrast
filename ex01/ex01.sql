@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS culdampolla;
 USE culdampolla;
+
 CREATE TABLE IF NOT EXISTS clients (
   clients_id INT NOT NULL AUTO_INCREMENT ,
   clients_nom VARCHAR(40) NOT NULL,
@@ -19,9 +20,9 @@ CREATE TABLE IF NOT EXISTS clients (
 );
 CREATE TABLE IF NOT EXISTS comandes (
   comandes_id INT NOT NULL AUTO_INCREMENT ,
-  clients_id INT , 
-  empleats_id INT ,
- 
+  clients_id INT NOT NULL, 
+  empleats_id INT NOT NULL,
+  comandes_data DATE NOT NULL,
   PRIMARY KEY (comandes_id),
   FOREIGN KEY  (clients_id) REFERENCES clients(clients_id),
   FOREIGN KEY (empleats_id) REFERENCES empleats(empleats_id)
@@ -126,20 +127,31 @@ CREATE TABLE IF NOT EXISTS ulleres_comandes(
   ('Ulleres2','1','2','Pasta','Vermell','N/C',225.0,1),
   ('Ulleres3','0','1','Metalica','negre','blau',230.0,2),
   ('Ulleres4','1.5','1.3','Metalica','groc','N/C',85.0,2),
-  ('Ulleres5','0.5','0.6','Pasta','groc','N/C',63.0,3);
-
+  ('Ulleres5','0.5','0.6','aire','groc','N/C',63.0,3);
         
   INSERT INTO comandes (
   clients_id ,
-  empleats_id
+  empleats_id,
+  comandes_data
  )
   VALUES
-  (1,1),
-  (2,5),
-  (3,3),
-  (5,6),
-  (6,3)
-  ;
+  (1,1,STR_TO_DATE("01-03-2010",'%d-%m-%Y')),
+  (2,5,STR_TO_DATE('14-03-2010','%d-%m-%Y')),
+  (3,3,STR_TO_DATE('23-02-2010','%d-%m-%Y')),
+  (5,6,STR_TO_DATE('15-07-2010','%d-%m-%Y')),
+  (6,3,STR_TO_DATE('16-07-2010','%d-%m-%Y')),
+  (1,1,STR_TO_DATE('01-03-2014','%d-%m-%Y')),
+  (2,5,STR_TO_DATE('14-03-2014','%d-%m-%Y')),
+  (3,3,STR_TO_DATE('23-02-2014','%d-%m-%Y')),
+  (5,6,STR_TO_DATE('15-07-2014','%d-%m-%Y')),
+  (6,3,STR_TO_DATE('16-07-2014','%d-%m-%Y')),
+  (1,1,STR_TO_DATE('01-03-2018','%d-%m-%Y')),
+  (2,5,STR_TO_DATE('14-03-2018','%d-%m-%Y')),
+  (3,3,STR_TO_DATE('23-02-2018','%d-%m-%Y')),
+  (5,6,STR_TO_DATE('15-07-2018','%d-%m-%Y')),
+  (6,3,STR_TO_DATE('16-07-2018','%d-%m-%Y'));
+  
+  
   INSERT INTO ulleres_comandes(
   ulleres_id,
   comandes_id)
@@ -148,16 +160,26 @@ CREATE TABLE IF NOT EXISTS ulleres_comandes(
   (1,2),
   (3,4),
   (5,3),
-  (4,5);
+  (4,5),
+  (1,6),
+  (2,7),
+  (5,8),
+  (5,9),
+  (4,10),
+  (3,11),
+  (1,12),
+  (3,13),
+  (5,14),
+  (4,15);
+  
   
   -- Consulta que mostra quin empleat ha realitzat la comanda i quina ullera ha venut i de quina marca
 
-SELECT comandes.comandes_id,comandes.empleats_id,empleats.empleats_nom,ulleres_comandes.ulleres_id,ulleres_marca
-FROM comandes,empleats,ulleres,ulleres_comandes
- where comandes.empleats_id=empleats.empleats_id
- and ulleres_comandes.ulleres_id=ulleres.ulleres_id
- and ulleres_comandes.comandes_id=comandes.comandes_id;
- 
+
+SELECT clients.clients_id,clients.clients_nom,comandes_id,date_format(comandes_data,'%d-%m-%Y') FROM clients,comandes 
+WHERE comandes.clients_id=clients.clients_id 
+AND clients_nom='client1'
+AND comandes_data BETWEEN str_to_date('01-01-2010','%d-%m-%Y') AND str_to_date('01-01-2017','%d-%m-%Y');
 
 
 
