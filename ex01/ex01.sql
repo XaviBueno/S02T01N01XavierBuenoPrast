@@ -193,3 +193,12 @@ AND comandes.comandes_id=ulleres_comandes.comandes_id
 AND ulleres_comandes.ulleres_id=ulleres.ulleres_id
 AND comandes_data BETWEEN str_to_date('01-01-2010','%d-%m-%Y') AND str_to_date('31-12-2010','%d-%m-%Y');
 
+-- Llista els diferents proveïdors que han subministrat ulleres venudes amb èxit per l'òptica.
+
+SELECT comandes.comandes_id, ulleres.ulleres_id, ulleres_marca, proveidors.proveidors_id, proveidors_nom 
+FROM comandes,ulleres,ulleres_comandes, proveidors
+WHERE comandes.comandes_id=ulleres_comandes.comandes_id
+AND ulleres_comandes.ulleres_id=ulleres.ulleres_id
+AND ulleres.proveidors_id=proveidors.proveidors_id;
+
+
