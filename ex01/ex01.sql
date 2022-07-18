@@ -149,8 +149,8 @@ CREATE TABLE IF NOT EXISTS ulleres_comandes(
   (2,5,STR_TO_DATE('14-03-2018','%d-%m-%Y')),
   (3,3,STR_TO_DATE('23-02-2018','%d-%m-%Y')),
   (5,6,STR_TO_DATE('15-07-2018','%d-%m-%Y')),
-  (6,3,STR_TO_DATE('16-07-2018','%d-%m-%Y'));
-  
+  (6,3,STR_TO_DATE('16-07-2018','%d-%m-%Y')),
+  (4,1,STR_TO_DATE('16-07-2010','%d-%m-%Y'));
   
   INSERT INTO ulleres_comandes(
   ulleres_id,
@@ -170,10 +170,12 @@ CREATE TABLE IF NOT EXISTS ulleres_comandes(
   (1,12),
   (3,13),
   (5,14),
-  (4,15);
+  (4,15),
+  (3,16);
   
   
-  -- Consulta que mostra quin empleat ha realitzat la comanda i quina ullera ha venut i de quina marca
+  
+-- Llista el total de factures d'un client/a en un període determinat.
 
 
 SELECT clients.clients_id,clients.clients_nom,comandes_id,date_format(comandes_data,'%d-%m-%Y') FROM clients,comandes 
@@ -181,5 +183,13 @@ WHERE comandes.clients_id=clients.clients_id
 AND clients_nom='client1'
 AND comandes_data BETWEEN str_to_date('01-01-2010','%d-%m-%Y') AND str_to_date('01-01-2017','%d-%m-%Y');
 
+-- Llista els diferents models d'ulleres que ha venut un empleat/da durant un any.
 
+SELECT comandes.comandes_id, comandes.empleats_id, empleats_nom, ulleres.ulleres_id,ulleres_marca
+FROM comandes,empleats,ulleres,ulleres_comandes
+where comandes.empleats_id=empleats.empleats_id
+AND empleats_nom='Joan'
+AND comandes.comandes_id=ulleres_comandes.comandes_id
+AND ulleres_comandes.ulleres_id=ulleres.ulleres_id
+AND comandes_data BETWEEN str_to_date('01-01-2010','%d-%m-%Y') AND str_to_date('31-12-2010','%d-%m-%Y');
 
